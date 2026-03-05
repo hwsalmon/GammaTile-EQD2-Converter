@@ -1,0 +1,18 @@
+# GammaTile EQD2 Converter — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# DICOM I/O
+pydicom>=2.4.0
+
+# RT Structure contour rasterization
+rt-utils>=1.2.7
+
+# Numerical computing
+numpy>=1.26.0
+scipy>=1.13.0
+
+# GUI framework (Phase 3)
+PySide6>=6.7.0
+
+# Visualization
+matplotlib>=3.9.0

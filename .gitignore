@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# DICOM data (large / may contain patient info)
+Test Data/
+*.dcm
+
+# OS
+.DS_Store
+Thumbs.db
