@@ -13,9 +13,34 @@ Phases:
     4  exporter.py      — DICOM-RT export         🔲 (TODO)
 """
 
+import os
+import sys
+
+
+def _fix_ld_library_path() -> None:
+    """Ensure PySide6's bundled Qt libs are on LD_LIBRARY_PATH.
+
+    When installed via pip the entry-point script doesn't go through launch.sh,
+    so we replicate its logic here.  Re-exec if the path needs updating (the
+    dynamic linker reads LD_LIBRARY_PATH at process start, not mid-flight).
+    """
+    import importlib.util
+    spec = importlib.util.find_spec("PySide6")
+    if not spec:
+        return
+    lib_dir = os.path.join(os.path.dirname(spec.origin), "Qt", "lib")
+    if not os.path.isdir(lib_dir):
+        return
+    existing = os.environ.get("LD_LIBRARY_PATH", "")
+    if lib_dir not in existing.split(":"):
+        os.environ["LD_LIBRARY_PATH"] = f"{lib_dir}:{existing}" if existing else lib_dir
+        os.execv(sys.executable, [sys.executable] + sys.argv)
+
+
+_fix_ld_library_path()
+
 import argparse
 import logging
-import sys
 from pathlib import Path
 
 from io_manager import IOManager, DICOMIngestionError
